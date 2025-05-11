@@ -4,6 +4,14 @@ keypad = [
     ["7", "8", "9"],
 ]
 
+keypad2 = [
+    ["#", "#", "1", "#", "#"],
+    ["#", "2", "3", "4", "#"],
+    ["5", "6", "7", "8", "9"],
+    ["#", "A", "B", "C", "#"],
+    ["#", "#", "D", "#", "#"],
+]
+
 instructions = [
     "ULL",
     "RRDDD",
@@ -32,8 +40,27 @@ def press(current, instruction):
 
     return x, y
 
+def press2(current, instruction):
+    x, y = current
+    for i in instruction:
+        dx, dy = moves[i]
+        x += dx
+        x = min(x, len(keypad2) - 1)
+        x = max(x, 0)
+        if keypad2[x][y] == "#":
+            x -= dx
+        y += dy
+        y = min(y, len(keypad2[0]) - 1)
+        y = max(y, 0)
+        if keypad2[x][y] == "#":
+            y -= dy
+
+    return x, y
+
+
 with open("./resources/day2.txt") as f:
     instructions = f.read().strip().splitlines()
+
 
 def part1():
     x, y = 1, 1
@@ -44,4 +71,16 @@ def part1():
 
     print("".join(pressed))
 
+
+def part2():
+    x, y = 2, 0
+    pressed = []
+    for i in instructions:
+        x, y = press2((x, y), i)
+        pressed.append(keypad2[x][y])
+
+    print("".join(pressed))
+
+
 part1()
+part2()
