@@ -47,11 +47,9 @@ def decrypt_name(s):
     name = []
     for part in parts:
         decrypted_part = ""
-        parts[parts.index(part)] = "".join(part)
         for c in part:
-            i = (index[c] + sector_id) % len(alphabet)
-            decrypted = alphabet[i]
-            decrypted_part += decrypted
+            shifted = (index[c] + sector_id) % len(alphabet)
+            decrypted_part += alphabet[shifted]
         name.append(decrypted_part)
 
     return " ".join(name), sector_id
