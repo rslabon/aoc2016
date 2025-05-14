@@ -99,7 +99,7 @@ def has_ssl(outside, inside):
     for ins in inside:
         inside_bab |= set(find_aba(ins))
 
-    inside_aba = set([f"{aba[1]}{aba[0]}{aba[1]}" for aba in inside_bab])
+    inside_aba = set([f"{bab[1]}{bab[0]}{bab[1]}" for bab in inside_bab])
 
     return outside_aba & inside_aba
 
