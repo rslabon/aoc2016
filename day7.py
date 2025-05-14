@@ -95,13 +95,13 @@ def has_ssl(outside, inside):
     for out in outside:
         outside_aba |= set(find_aba(out))
 
-    inside_aba = set()
+    inside_bab = set()
     for ins in inside:
-        inside_aba |= set(find_aba(ins))
+        inside_bab |= set(find_aba(ins))
 
-    must_match_inside = set([f"{aba[1]}{aba[0]}{aba[1]}" for aba in inside_aba])
+    inside_aba = set([f"{aba[1]}{aba[0]}{aba[1]}" for aba in inside_bab])
 
-    return outside_aba & must_match_inside
+    return outside_aba & inside_aba
 
 
 def part2():
