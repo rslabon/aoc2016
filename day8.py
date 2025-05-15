@@ -1,6 +1,3 @@
-width = 7
-height = 3
-
 commands = [
     "rect 3x2",
     "rotate column x=1 by 1",
@@ -8,37 +5,42 @@ commands = [
     "rotate column x=1 by 1",
 ]
 
-width = 50
-height = 6
-
 with open("./resources/day8.txt") as f:
     commands = f.read().strip().splitlines()
 
-grid = []
-for row in range(height):
-    grid.append([])
-    for _ in range(width):
-        grid[row].append(".")
+
+def create_grid(width, height):
+    grid = []
+    for row in range(height):
+        grid.append([])
+        for _ in range(width):
+            grid[row].append(".")
+
+    return grid
 
 
-def printGrid():
+def printGrid(grid):
+    height = len(grid)
+    width = len(grid[0])
     for row in range(height):
         for col in range(width):
             print(grid[row][col], end="")
         print()
+
     print()
 
 
-def rect(a, b):
+def rect(grid, a, b):
     for row in range(b):
         for col in range(a):
             grid[row][col] = "#"
 
 
-def rotate_column(a, b):
+def rotate_column(grid, a, b):
     if b == 0:
         return
 
+    height = len(grid)
     row = 0
     prev = grid[row - 1][a]
     while row < height:
@@ -47,13 +49,14 @@ def rotate_column(a, b):
         prev = current
         row += 1
 
-    rotate_column(a, b - 1)
+    rotate_column(grid, a, b - 1)
 
 
-def rotate_row(a, b):
+def rotate_row(grid, a, b):
     if b == 0:
         return
 
+    width = len(grid[0])
     col = 0
     prev = grid[a][col - 1]
     while col < width:
@@ -62,31 +65,33 @@ def rotate_row(a, b):
         prev = current
         col += 1
 
-    rotate_row(a, b - 1)
+    rotate_row(grid, a, b - 1)
 
 
-def execute(command):
+def execute(grid, command):
     # rect AxB
     if command.startswith("rect"):
         _, size = command.split(" ")
         a, b = map(int, size.split("x"))
-        rect(a, b)
+        rect(grid, a, b)
 
     # rotate column x=A by B
     if command.startswith("rotate column"):
         command = command.removeprefix("rotate column x=")
         a, b = map(int, command.split(" by "))
-        rotate_column(a, b)
+        rotate_column(grid, a, b)
 
     # rotate row y=A by B
     if command.startswith("rotate row"):
         command = command.removeprefix("rotate row y=")
         a, b = map(int, command.split(" by "))
-        rotate_row(a, b)
+        rotate_row(grid, a, b)
 
 
-def count_lit():
+def count_lit(grid):
     count = 0
+    height = len(grid)
+    width = len(grid[0])
     for row in range(height):
         for col in range(width):
             if grid[row][col] == "#":
@@ -95,16 +100,19 @@ def count_lit():
 
 
 def part1():
+    grid = create_grid(50, 6)
     for command in commands:
-        execute(command)
+        execute(grid, command)
 
-    print(count_lit())
+    print(count_lit(grid))
+
 
 def part2():
+    grid = create_grid(50, 6)
     for command in commands:
-        execute(command)
+        execute(grid, command)
 
-    printGrid() # ZJHRKCPLYJ
+    printGrid(grid)  # ZJHRKCPLYJ
 
 
 part1()
