@@ -144,7 +144,6 @@ heapq.heappush(q, (
     0,
     1, to_string(grid), possible_items_to_move(grid, 1), [to_string(grid)]))
 
-min_path = []
 while q:
     _, floor_nr, grid, items_to_move, prev_grids = heapq.heappop(q)
     grid = parse(grid)
@@ -152,8 +151,8 @@ while q:
 
     if len(items_on_4th_floor) == full_floor:
         print("found", len(prev_grids) - 1)
-        for g in min_path:
-            print(g)
+        for string_grid in prev_grids:
+            print(string_grid)
         break
 
     next_floors = [next_floor_nr
