@@ -145,13 +145,13 @@ heapq.heappush(q, (
     1, to_string(grid), possible_items_to_move(grid, 1), [to_string(grid)]))
 
 while q:
-    _, floor_nr, grid, items_to_move, prev_grids = heapq.heappop(q)
+    _, floor_nr, grid, items_to_move, prev_string_grids = heapq.heappop(q)
     grid = parse(grid)
     items_on_4th_floor = items_on_floor(grid, 4)
 
     if len(items_on_4th_floor) == full_floor:
-        print("found", len(prev_grids) - 1)
-        for string_grid in prev_grids:
+        print("found", len(prev_string_grids) - 1)
+        for string_grid in prev_string_grids:
             print(string_grid)
         break
 
@@ -161,7 +161,7 @@ while q:
     for next_floor in sorted(next_floors, reverse=True):
         for items in items_to_move:
             has_moved, moved_string_grid = move(to_string(grid), items, floor_nr, next_floor)
-            if has_moved and moved_string_grid in prev_grids:
+            if has_moved and moved_string_grid in prev_string_grids:
                 continue
 
             if has_moved:
@@ -174,5 +174,5 @@ while q:
                     next_floor,
                     moved_string_grid,
                     possible_items_to_move(moved_grid, next_floor),
-                    prev_grids + [moved_string_grid]
+                    prev_string_grids + [moved_string_grid]
                 ))
