@@ -3,7 +3,6 @@ class Node:
         self.id = id
         self.value = value
         self.next = None
-        self.prev = None
 
     def __repr__(self):
         return f"#{self.id} [{self.value}]"
@@ -31,31 +30,38 @@ def part1():
 def part2():
     root = Node(1, 1)
     current = root
-    nodes = dict()
     i = 1
-    while i < 5:
-        nodes[current.id] = current
+    size = 3014387
+    before_opposite_node = None
+    while i < size:
         node = Node(i + 1, 1)
         current.next = node
-        node.prev = current
         current = current.next
+        if i == (size // 2) - 1:
+            before_opposite_node = node
         i += 1
 
-    nodes[current.id] = current
     current.next = root
-    root.prev = current
 
     current = root
     while current.next != current:
-        size = len(nodes)
-        opposite_id = current.id + (size // 2)
-        opposite_node = nodes[opposite_id]
+        if size <= 3:
+            before_opposite_node = current
+            opposite_node = current.next
+        else:
+            opposite_node = before_opposite_node.next
+
         current.value += opposite_node.value
-        opposite_node.prev.next = opposite_node.next
+        before_opposite_node.next = opposite_node.next
+
+        if size % 2 == 1:
+            before_opposite_node = before_opposite_node.next
+
         current = current.next
+        size -= 1
 
-    print(current.id, current.value)
+    print(current.id)
 
 
-# part1()
+part1()
 part2()
