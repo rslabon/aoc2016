@@ -12,10 +12,10 @@ instructions = [
 ]
 input = "abcde"
 
-# with open("./resources/day21.txt") as f:
-#     instructions = f.read().strip().splitlines()
-#
-# input = "abcdefgh"
+with open("./resources/day21.txt") as f:
+    instructions = f.read().strip().splitlines()
+
+input = "abcdefgh"
 
 input = list(input)
 
@@ -56,11 +56,9 @@ def rotate_on_letter(input, letter):
 
 
 def unrotate_on_letter(input, letter):
-    index = input.index(letter)
-    steps = 1 + index
-    if index >= 4:
-        steps += 1
-    input = rotate_left(input, steps)
+    # found by try on every letter with rotate_on_letter and check how many times use rotate_on_letter to reverse it
+    for _ in range(11):
+        input = rotate_on_letter(input, letter)
     return input
 
 
@@ -73,6 +71,7 @@ def move(input, source, target):
 
 def scramble(input, instructions):
     for instruction in instructions:
+        before = [] + input
         if instruction.startswith("swap position"):
             source, target = re.findall(r"swap position (\d+) with position (\d+)", instruction)[0]
             source, target = int(source), int(target)
@@ -108,7 +107,7 @@ def scramble(input, instructions):
             source, target = int(source), int(target)
             input = move(input, source, target)
 
-        print(instruction, "".join(input))
+        print("".join(before), instruction, "".join(input))
 
     return "".join(input)
 
@@ -116,6 +115,7 @@ def scramble(input, instructions):
 def unscramble(input, instructions):
     instructions.reverse()
     for instruction in instructions:
+        before = [] + input
         if instruction.startswith("swap position"):
             source, target = re.findall(r"swap position (\d+) with position (\d+)", instruction)[0]
             source, target = int(source), int(target)
@@ -151,7 +151,7 @@ def unscramble(input, instructions):
             source, target = int(source), int(target)
             input = move(input, target, source)
 
-        print(instruction, "".join(input))
+        print("".join(before), instruction, "".join(input))
 
     return "".join(input)
 
@@ -159,12 +159,8 @@ def unscramble(input, instructions):
 def part1():
     print(scramble(input, instructions))
 
-
 def part2():
-    print(scramble(input, instructions))
-    print(unscramble(list("decab"), instructions))
+    print(unscramble(list("fbgdceah"), instructions))
 
-
-
-# part1()
+part1()
 part2()
